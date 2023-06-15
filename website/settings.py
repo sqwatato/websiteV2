@@ -44,7 +44,7 @@ DEBUG = True
 if DEBUG:
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 else:
-    ALLOWED_HOSTS = ['.herokuapp.com/', '.vercel.app/']
+    ALLOWED_HOSTS = ['.herokuapp.com/', '.vercel.app']
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
