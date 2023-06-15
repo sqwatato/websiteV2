@@ -1,0 +1,141 @@
+{% load static %}
+{% comment %} {% load compress %} {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Jayden Lim</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
+        <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mada" /> -->
+        <script src="https://kit.fontawesome.com/d9751546e9.js" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="{% static 'css/maicons.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/topbar.virtual.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        {% block head %}
+        {% endblock head %}
+
+
+    </head>
+    <body class="theme-red" id="welcome-thing">
+        {% block nav %}
+        <header class="top-area">
+            <div class="header-area">
+                <!-- Start Navigation -->
+                <nav class="navbar navbar-default bootsnav navbar-expand-lg navbar-fixed dark no-background">
+                    <div class="container">
+                        <!-- Start Header Navigation -->
+
+                        <div class="navbar-header">
+                            <a class="navbar-brand nav-link" href="#welcome-thing">Jayden Lim</a>
+                            <button type="button" class="navbar-toggler" data-toggle="collapse"
+                                data-target="#navbar-menu" aria-controls="navbarSupportedContent" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                        </div>
+
+                        <!-- End Header Navigation -->
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse menu-ui-design justify-content-end" id="navbar-menu">
+                            <ul class="nav navbar-nav" data-in="fadeInDown" data-out="fadeOutUp">
+                                <li class="nav-item smooth-menu active"></li>
+                                <li class="nav-item smooth-menu">
+                                    <a class="nav-link" href="#welcome-thing">home</a>
+                                </li>
+                                <li class="nav-item smooth-menu">
+                                    <a class="nav-link" href="#about">about</a>
+                                </li>
+                                <!-- <li class="nav-item smooth-menu">
+                                    <a class="nav-link" href="#education">education</a>
+                                </li> -->
+                                <li class="nav-item smooth-menu">
+                                    <a class="nav-link" href="#skills">skills</a>
+                                </li>
+                                <!-- <li class="nav-item smooth-menu">
+                                    <a class="nav-link" href="#experience">experience</a>
+                                </li> -->
+
+                                <li class="nav-item smooth-menu">
+                                    <a class="nav-link" href="#portfolio-start">portfolio</a>
+                                </li>
+                                <!-- <li class="nav-item smooth-menu">
+                                    <a class="nav-link" href="#clients">clients</a>
+                                </li> -->
+                                <li class="nav-item smooth-menu">
+                                    <a class="nav-link" href="#contact-start">contact</a>
+                                </li>
+                            </ul>
+                            <!--/.nav -->
+                        </div>
+                        <!-- /.navbar-collapse -->
+                    </div>
+                    <!--/.container-->
+                </nav>
+                <!--/nav-->
+                <!-- End Navigation -->
+            </div>
+            <!--/.header-area-->
+        </header>
+        {% endblock nav %}
+
+        {% block body %}
+        
+        {% endblock body %}
+
+
+        <footer id="footer-copyright" class="footer-copyright">
+            <div class="container">
+                <div class="hm-footer-copyright text-center">
+                    <p style="margin-bottom: 0">
+                        &copy; copyright 2023 | designed and developed by
+                        <a id="copyright-name" href="https://github.com/sqwatato"><span>Jayden Lim</span></a>
+                    </p>
+                </div>
+            </div>
+
+            <div id="scroll-Top">
+                <div class="return-to-top">
+                    <i class="fa fa-angle-up" id="scroll-top"></i>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jquery.sticky.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+        {% comment %} <script type="text/javascript" src="{% static 'js/jquery.fancybox.min.js' %}"></script> {% endcomment %}
+        <script type="text/javascript" src="{% static 'js/wow.min.js' %}"></script>
+        <script>
+            new WOW().init();
+        </script>
+        <script type="text/javascript" src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/topbar-virtual.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+
+    {% comment %} <script type="text/javascript" src="{% static 'js/website.js' %}"></script> {% endcomment %}
+    {% block js %}
+        
+    {% endblock js %} 
+
+
+    
+    </body>
+</html>

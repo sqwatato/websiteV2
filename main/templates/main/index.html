@@ -1,0 +1,622 @@
+{% extends "main/layout.html" %} {% load static %} {% block body %}
+<div class="vg-page page-about">
+  <div id="index-body">
+    <section id="welcome-hero" class="welcome-hero">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <div class="header-text">
+              <h2>
+                Welcome <br />
+                I<span>'</span>m
+                <span>Jayden</span>
+                Lim
+              </h2>
+              <p>Web Developer <span>&</span> AI Enthusiast</p>
+              <a
+                type="button"
+                href="{% static 'documents/Jayden_Lim_Resume.pdf' %}"
+                download
+                style="text-decoration: none"
+                >download resume</a
+              >
+            </div>
+            <!--/.header-text-->
+          </div>
+          <!--/.col-->
+        </div>
+        <!-- /.row-->
+      </div>
+      <!-- /.container-->
+    </section>
+    <div id="about" class="space"></div>
+    <!--/.welcome-hero-->
+    <div class="container" id="about-me">
+      <div class="row">
+        <div class="col-lg-4 py-3">
+          <div class="img-place wow fadeInUp">
+            <img src="./static/images/jayden.jpg" alt="" />
+          </div>
+        </div>
+        <div class="col-lg-6 offset-lg-1 wow fadeInRight">
+          <h1 class="fw-light">Jayden Lim</h1>
+          <h5 class="fg-theme mb-3">Web Developer & AI Enthusiast</h5>
+          <p class="text-muted">
+            I'm currently a
+            <span style="color: hotpink; font-weight: 600">Junior</span> in high
+            school, with experience in <br />Web Developement and an interest in
+            AI. This summer, I hope to deepen my skills and gain experience in
+            the field of computer through projects and research. Besides coding,
+            I enjoy playing badminton and video games!
+          </p>
+          <ul class="theme-list">
+            <li><b>From:</b> California, US</li>
+            <li><b>Lives In:</b> California, US</li>
+            <li><b>Age:</b> 16</li>
+            <li><b>School:</b> Monta Vista High School</li>
+          </ul>
+          <div class="container-social-i">
+            <ul>
+              <!-- GITHUB -->
+              <li>
+                <a
+                  href="https://github.com/sqwatato"
+                  target="_blank"
+                  aria-label="open link to jayden's github page."
+                >
+                  <i
+                    class="fab fa-github"
+                    aria-hidden="true"
+                    style="font-size: 2em"
+                  ></i>
+                  <span class="visually-hidden">GitHub</span></a
+                >
+              </li>
+              <!-- Hashnode -->
+              <li>
+                <a
+                  href="#"
+                  target="_blank"
+                  aria-label="open link to jayden's hashnode page."
+                >
+                  <i
+                    class="fa-brands fa-hashnode"
+                    aria-hidden="true"
+                    style="font-size: 2em"
+                  ></i>
+                  <span class="visually-hidden">Hashnode</span>
+                </a>
+              </li>
+              <!-- LinkedIn -->
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/jayden-lim-9ba295276/"
+                  target="_blank"
+                  aria-label="open link to jayden's linkedin page."
+                >
+                  <i
+                    class="fab fa-linkedin"
+                    aria-hidden="true"
+                    style="font-size: 2em"
+                  ></i>
+                  <span class="visually-hidden">LinkedIn</span>
+                </a>
+              </li>
+              <!-- Devpost -->
+              <li>
+                <a
+                  href="https://devpost.com/jaydenclim"
+                  target="_blank"
+                  aria-label="open link to jayden's devpost page."
+                >
+                  <iconify-icon
+                    icon="simple-icons:devpost"
+                    style="font-size: 2em"
+                  ></iconify-icon>
+                  <span class="visually-hidden">Devpost</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="skills" class="space"></div>
+    <div class="container">
+      <h1 class="text-center fw-normal wow fadeInUp">My Skills</h1>
+      <div class="container-icons py-5 wow fadeInUp">
+        <div class="box-icon">
+          <i class="devicon devicon-html5-plain" aria-hidden="true"></i>
+          <p>HTML5</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-css3-plain" aria-hidden="true"></i>
+          <p>CSS3</p>
+        </div>
+        <div class="box-icon">
+          <i class="fab fa-js" aria-hidden="true"></i>
+          <p>JavaScript</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-jquery-plain" aria-hidden="true"></i>
+          <p>jQuery</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-git-plain" aria-hidden="true"></i>
+          <p>Git</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-bootstrap-plain" aria-hidden="true"></i>
+          <p>Bootstrap</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-sass-original" aria-hidden="true"></i>
+          <p>SASS</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-heroku-original" aria-hidden="true"></i>
+          <p>Heroku</p>
+        </div>
+      </div>
+      <div class="container-icons wow fadeInUp">
+        <div class="box-icon">
+          <i class="fas fa-terminal" aria-hidden="true"></i>
+          <p>Command Line</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-visualstudio-plain" aria-hidden="true"></i>
+          <p>VS Code</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-django-plain" aria-hidden="true"></i>
+          <p>Django</p>
+        </div>
+        <div class="box-icon">
+          <i class="devicon devicon-postgresql-plain" aria-hidden="true"></i>
+          <p>PostgreSQL</p>
+        </div>
+        <div
+          class="box-icon wow wobble"
+          data-wow-duration="2s"
+          data-wow-delay="0.5s"
+        >
+          <i
+            class="devicon devicon-python-plain"
+            aria-hidden="true"
+            style="color: cornflowerblue"
+          ></i>
+          <p>Python</p>
+        </div>
+        <div class="box-icon">
+          <i class="fas fa-chart-line" aria-hidden="true"></i>
+          <p>Data Science</p>
+        </div>
+        <!-- ai -->
+        <div class="box-icon">
+          <i class="fas fa-robot" aria-hidden="true"></i>
+          <p>Machine Learning</p>
+        </div>
+        <!-- opencv -->
+        <div class="box-icon">
+          <i class="devicon devicon-opencv-plain" aria-hidden="true"></i>
+          <p>Open CV</p>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="container pt-5">
+            <div class="row">
+                <div class="col-md-6 wow fadeInRight">
+                    <h2 class="fw-normal">Education</h2>
+                    <ul class="timeline mt-4 pr-md-5">
+                        <li>
+                            <div class="title">2010</div>
+                            <div class="details">
+                                <h5>Specialize of course</h5>
+                                <small class="fg-theme">University of Study</small>
+                                <p>
+                                    There are many variations of passages of Lorem Ipsum
+                                    available, but the majority have suffered
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="title">2009</div>
+                            <div class="details">
+                                <h5>Specialize of course</h5>
+                                <small class="fg-theme">University of Study</small>
+                                <p>
+                                    There are many variations of passages of Lorem Ipsum
+                                    available, but the majority have suffered
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="title">2008</div>
+                            <div class="details">
+                                <h5>Specialize of course</h5>
+                                <small class="fg-theme">University of Study</small>
+                                <p>
+                                    There are many variations of passages of Lorem Ipsum
+                                    available, but the majority have suffered
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 wow fadeInRight" data-wow-delay="200ms">
+                    <h2 class="fw-normal">Experience</h2>
+                    <ul class="timeline mt-4 pr-md-5">
+                        <li>
+                            <div class="title">2017 - Current</div>
+                            <div class="details">
+                                <h5>Specialize of course</h5>
+                                <small class="fg-theme">University of Study</small>
+                                <p>
+                                    There are many variations of passages of Lorem Ipsum
+                                    available, but the majority have suffered
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="title">2014</div>
+                            <div class="details">
+                                <h5>Specialize of course</h5>
+                                <small class="fg-theme">University of Study</small>
+                                <p>
+                                    There are many variations of passages of Lorem Ipsum
+                                    available, but the majority have suffered
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="title">2011</div>
+                            <div class="details">
+                                <h5>Specialize of course</h5>
+                                <small class="fg-theme">University of Study</small>
+                                <p>
+                                    There are many variations of passages of Lorem Ipsum
+                                    available, but the majority have suffered
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>-->
+  </div>
+</div>
+<div id="portfolio-start" class="space"></div>
+<div class="vg-page page-portfolio" id="portfolio">
+  <div class="container">
+    <div
+      class="text-center wow fadeInUp"
+      style="visibility: visible; animation-name: fadeInUp"
+    >
+      <div class="badge badge-subhead">Portfolio</div>
+    </div>
+    <h1
+      class="text-center fw-normal wow fadeInUp"
+      style="visibility: visible; animation-name: fadeInUp"
+    >
+      See my work
+    </h1>
+    <div
+      class="filterable-button py-3 wow fadeInUp"
+      data-toggle="selected"
+      style="visibility: visible; animation-name: fadeInUp"
+    >
+      <button class="btn btn-theme-outline selected" data-filter="*">
+        All
+      </button>
+      {% for tag in tags %}
+      <button class="btn btn-theme-outline" data-filter=".{{ tag }}">{{ tag }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="gridder my-3" style="position: relative; height: 570.968px">
+      {% for project, top, left, string in details %}
+      <div
+        class="grid-item {{string}} wow zoomIn"
+        style="
+            position: absolute;
+            left: {{left}}%;
+            top: {{top}}px;
+            visibility: visible;
+            animation-name: zoomIn;
+          "
+      >
+        {% comment %}
+        <div
+          class="img-place"
+          data-src="{% static 'images/'|add:project.image %}"
+          data-fancybox=""
+          data-caption="<h5 class='fg-theme'>{{project.title}}</h5> <p>{{project.date}}</p>"
+        >
+          <img
+            class="portfolio-images"
+            src="{% static 'images/'|add:project.image %}"
+            alt=""
+          />
+          <div class="img-caption">
+            <h5 class="fg-theme">{{project.title}}</h5>
+            <p>{{project.date}}</p>
+          </div>
+        </div>
+        {% endcomment %}
+          <div class="project">
+            <a href="/project/{{project.slug}}" style="text-decoration:none; color:white;">
+            <figure class="project-fig">
+                <div class="project-image-div">
+                    <img class="project-image" src="{% static 'images/'|add:project.image %}">
+                </div>
+                <figcaption>
+                    <div>
+                        <p class="project-title">{{project.title}}</p>
+                        <hr class="project-hr">
+                        <p class="project-blurb">{{project.blurb}}</p>
+                        <div>
+                            {% comment %} <ul class="tag-list">
+                                {% for tag in project.tags.all %}
+                                    <li style="padding-right: 10px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 22 22" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <circle cx="8.5" cy="8.5" r="1" fill="currentColor" />
+                                            <path d="M4 7v3.859c0 .537 .213 1.052 .593 1.432l8.116 8.116a2.025 2.025 0 0 0 2.864 0l4.834 -4.834a2.025 2.025 0 0 0 0 -2.864l-8.117 -8.116a2.025 2.025 0 0 0 -1.431 -.593h-3.859a3 3 0 0 0 -3 3z" />
+                                        </svg>
+                                        {{tag.name}}
+                                    </li>
+                                {% endfor %}
+                            </ul> {% endcomment %}
+                        </div>
+                        <div class="project-links">
+                            <a href="{{project.github}}" aria-label="GitHub" target="_blank" rel="noreferrer" class="github-project">
+                                <svg height="30px" width="30px"  xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
+                                    <title>GitHub</title>
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                </svg>
+                            </a>
+                            {% if project.website_link|length > 0%}
+                                <a href="{{project.website_link}}" class="project-project" font-size="20px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-external-link" width="30px" height="30px" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5"></path>
+                                        <line x1="10" y1="14" x2="20" y2="4"></line>
+                                        <polyline points="15 4 20 4 20 9"></polyline>
+                                    </svg>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </figcaption>
+            </figure>
+            </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- End gridder -->
+    {% comment %}
+    <div
+      class="text-center wow fadeInUp"
+      style="visibility: visible; animation-name: fadeInUp"
+    >
+      <a href="javascript:void(0)" class="btn btn-theme">Load More</a>
+    </div>
+    {% endcomment %}
+  </div>
+</div>
+
+<div id="contact-start" class="space-2"></div>
+<div class="vg-page page-contact">
+  <!--contact start -->
+  <section id="contact" class="contact">
+    <div class="section-heading text-center">
+      <h1 class="text-center fw-normal wow fadeIn">Contact</h1>
+    </div>
+    <div class="container wow fadeInUp">
+      <div class="contact-content">
+        <div class="row">
+          <div class="col-md-offset-1 col-md-5 col-sm-6">
+            <div class="single-contact-box">
+              <div class="contact-form">
+                <form id="contact-form">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="name"
+                          placeholder="Name*"
+                          name="name"
+                        />
+                      </div>
+                      <!--/.form-group-->
+                    </div>
+                    <!--/.col-->
+                    <div class="col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="email"
+                          placeholder="Email*"
+                          name="email"
+                        />
+                      </div>
+                      <!--/.form-group-->
+                    </div>
+                    <!--/.col-->
+                  </div>
+                  <!--/.row-->
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="subject"
+                          placeholder="Subject"
+                          name="subject"
+                        />
+                      </div>
+                      <!--/.form-group-->
+                    </div>
+                    <!--/.col-->
+                  </div>
+                  <!--/.row-->
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <textarea
+                          class="form-control"
+                          rows="8"
+                          id="comment"
+                          placeholder="Message"
+                        ></textarea>
+                      </div>
+                      <!--/.form-group-->
+                    </div>
+                    <!--/.col-->
+                  </div>
+                  <!--/.row-->
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div id="contact-submit" class="single-contact-btn">
+                        <a class="contact-btn" role="button">submit</a>
+                      </div>
+                      <!--/.single-single-contact-btn-->
+                    </div>
+                    <!--/.col-->
+                  </div>
+                  <!--/.row-->
+                </form>
+                <!--/form-->
+              </div>
+              <!--/.contact-form-->
+            </div>
+            <!--/.single-contact-box-->
+          </div>
+          <!--/.col-->
+          <div class="col-md-offset-1 col-md-5 col-sm-6">
+            <div class="single-contact-box">
+              <div class="contact-adress">
+                <div class="contact-add-head">
+                  <h2>Jayden Lim</h2>
+                  <p>Web Developer & AI Enthusiast</p>
+                </div>
+                <div class="contact-add-info">
+                  <div
+                    class="single-contact-add-info"
+                    style="text-align: center"
+                  >
+                    <!-- <h3>website</h3> -->
+                    <h4
+                      style="display: inline"
+                      class="wow fadeIn"
+                      data-wow-delay="0.5s"
+                    >
+                      <span style="color: crimson">Questions?</span
+                      >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </h4>
+                    <h4
+                      style="display: inline"
+                      class="wow fadeIn"
+                      data-wow-delay="0.7s"
+                    >
+                      <span style="color: darkturquoise">Any ideas?</span
+                      ><br /><br />
+                    </h4>
+                    <h4 class="wow fadeIn" data-wow-delay="0.9s">
+                      <span style="color: darkmagenta"
+                        >Want to build something?</span
+                      >
+                    </h4>
+                    <h6>Let me know!</h6>
+                  </div>
+                </div>
+              </div>
+              <!--/.contact-adress-->
+
+              <div class="hm-foot-icon">
+                <h5>Find me on these online spaces too!</h5>
+                <div class="container-social-i">
+                  <ul>
+                    <li>
+                      <a
+                        href="https://github.com/sqwatato"
+                        target="_blank"
+                        aria-label="open link to jayden's github page."
+                      >
+                        <i
+                          class="fab fa-github"
+                          aria-hidden="true"
+                          style="font-size: 2em"
+                        ></i>
+                        <span class="visually-hidden">GitHub</span></a
+                      >
+                    </li>
+                    <!-- Hashnode -->
+                    <li>
+                      <a
+                        href="#"
+                        target="_blank"
+                        aria-label="open link to jayden's hashnode page."
+                      >
+                        <i
+                          class="fa-brands fa-hashnode"
+                          aria-hidden="true"
+                          style="font-size: 2em"
+                        ></i>
+                        <span class="visually-hidden">Hashnode</span>
+                      </a>
+                    </li>
+                    <!-- LinkedIn -->
+                    <li>
+                      <a
+                        href="https://www.linkedin.com/in/jayden-lim-9ba295276/"
+                        target="_blank"
+                        aria-label="open link to jayden's linkedin page."
+                      >
+                        <i
+                          class="fab fa-linkedin"
+                          aria-hidden="true"
+                          style="font-size: 2em"
+                        ></i>
+                        <span class="visually-hidden">LinkedIn</span>
+                      </a>
+                    </li>
+                    <!-- Devpost -->
+                    <li>
+                      <a
+                        href="https://devpost.com/jaydenclim"
+                        target="_blank"
+                        aria-label="open link to jayden's devpost page."
+                      >
+                        <iconify-icon
+                          icon="simple-icons:devpost"
+                          style="font-size: 2em"
+                        ></iconify-icon>
+                        <span class="visually-hidden">Devpost</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <!--/.hm-foot-icon-->
+            </div>
+            <!--/.single-contact-box-->
+          </div>
+          <!--/.col-->
+        </div>
+        <!--/.row-->
+      </div>
+      <!--/.contact-content-->
+    </div>
+    <!--/.container-->
+  </section>
+</div>
+{% endblock %} {% block js %}
+<script type="text/javascript" src="{% static 'js/website.js' %}"></script>
+{% endblock js %}

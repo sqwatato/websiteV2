@@ -1,0 +1,158 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% load markdownify %}
+
+{% block head %}
+    <link href="{% static 'css/project_page.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block nav %}
+    <header class="top-area">
+        <div class="header-area">
+            <!-- Start Navigation -->
+            <nav class="navbar navbar-default bootsnav navbar-expand-lg navbar-fixed dark no-background">
+                <div class="container">
+                    <!-- Start Header Navigation -->
+
+                    <div class="navbar-header">
+                        <a class="navbar-brand nav-link" href="{% url 'index' %}">Jayden Lim</a>
+                        <button type="button" class="navbar-toggler" data-toggle="collapse"
+                            data-target="#navbar-menu" aria-controls="navbarSupportedContent" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+
+                    <!-- End Header Navigation -->
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse menu-ui-design justify-content-end" id="navbar-menu">
+                        <ul class="nav navbar-nav" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class="nav-item smooth-menu active"></li>
+                            <li class="nav-item smooth-menu">
+                                <a class="nav-link" href="{% url 'index' %}#welcome-thing">home</a>
+                            </li>
+                            <li class="nav-item smooth-menu">
+                                <a class="nav-link" href="{% url 'index' %}#about">about</a>
+                            </li>
+                            <!-- <li class="nav-item smooth-menu">
+                                <a class="nav-link" href="#education">education</a>
+                            </li> -->
+                            <li class="nav-item smooth-menu">
+                                <a class="nav-link" href="/#skills">skills</a>
+                            </li>
+                            <!-- <li class="nav-item smooth-menu">
+                                <a class="nav-link" href="#experience">experience</a>
+                            </li> -->
+
+                            <li class="nav-item smooth-menu">
+                                <a class="nav-link" href="/#portfolio-start">portfolio</a>
+                            </li>
+                            <!-- <li class="nav-item smooth-menu">
+                                <a class="nav-link" href="#clients">clients</a>
+                            </li> -->
+                            <li class="nav-item smooth-menu">
+                                <a class="nav-link" href="/#contact-start">contact</a>
+                            </li>
+                        </ul>
+                        <!--/.nav -->
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!--/.container-->
+            </nav>
+            <!--/nav-->
+            <!-- End Navigation -->
+        </div>
+        <!--/.header-area-->
+    </header>
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <div style="margin: 50px;"></div>
+        <div class="header-div">
+            <h1 class="header">{{project.title}}</h1>
+            <div class="container-social-i" id="links">
+                <ul id="icon-link-list">
+                  <li>
+                    <a
+                      href="{{project.github}}"
+                      target="_blank"
+                      aria-label="open link to project github page."
+                    >
+                      <i
+                        class="fab fa-github"
+                        aria-hidden="true"
+                        style="font-size: 2em"
+                      ></i>
+                      <span class="visually-hidden">GitHub</span></a
+                    >
+                  </li>
+                  {% if project.website_link|length > 0%}
+                    <li>
+                        <a
+                        href="{{project.website_link}}"
+                        target="_blank"
+                        aria-label="open link to project website"
+                        >
+                        <i
+                            class="fas fa-globe"
+                            aria-hidden="true"
+                            style="font-size: 2em"
+                        ></i>
+                        <span class="visually-hidden">Website</span></a
+                        >
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            
+        </div>
+        <div class="container wow fadeInUp">
+            <div class="contact-content">
+              <div class="row">
+                <div class="col-md-offset-1 col-md-5 col-sm-6">
+                  <div class="single-contact-box">
+                    <div class="image-div">
+                        <img class="cool-image2" src="{% static 'images/'|add:project.image %}">
+                    </div>
+                  </div>
+                  <!--/.single-contact-box-->
+                </div>
+                <!--/.col-->
+                <div class="col-md-offset-1 col-md-5 col-sm-6">
+                  <div class="single-contact-box">
+                    <div id="description">
+                        {{project.description|markdownify}}
+                    </div>
+                    <!--/.contact-adress-->
+                    <!--/.hm-foot-icon-->
+                  </div>
+                  <!--/.single-contact-box-->
+                </div>
+                <!--/.col-->
+              </div>
+              <!--/.row-->
+            </div>
+            <!--/.contact-content-->
+          </div>
+
+
+        <div class="added">
+            {% if project.htmlLink|length > 0 %}
+                {% with "./"|add:project.htmlLink as template %}
+                    {% include template %}
+                {% endwith %}
+                <div class="space"></div>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    
+{% endblock %}
+
+{% block js %}
+    {% comment %} <script type="text/javascript" src="{% static 'js/websiteProjects.js' %}"></script> {% endcomment %}
+{% endblock js %}
+
