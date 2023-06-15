@@ -142,7 +142,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # if IS_HEROKU:
 DATABASES = {}
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, engine="django.db.backends.postgresql_psycopg2")
 
 # DATABASES = {
 #     'default': {
