@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import environ
-import django_heroku
+# import django_heroku
 import dj_database_url
 environ.Env.read_env()
 
@@ -142,7 +142,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # if IS_HEROKU:
 DATABASES = {}
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, engine="django.db.backends.postgresql_psycopg2")
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 # DATABASES = {
 #     'default': {
@@ -274,5 +274,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = os.environ["SENDGRID_API_KEY"]
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals(), staticfiles=False)
 
