@@ -144,7 +144,17 @@ DATABASES = {}
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'URL': os.getenv('POSTGRES_URL'),
+#         'NAME': os.getenv('POSTGRES_NAME'),
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'HOST': os.getenv('POSTGRES_HOST'),
+#         # 'PORT': os.getenv('PGPORT'),
+#     }
+# }
 
 
 # if "DATABASE_URL" in os.environ:
@@ -191,8 +201,11 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = 'static/'
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
