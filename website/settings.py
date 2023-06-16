@@ -39,7 +39,7 @@ else:
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
@@ -152,7 +152,7 @@ DATABASES = {
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': os.getenv('POSTGRES_HOST'),
-        # 'PORT': os.getenv('PGPORT'),
+        'PORT': os.getenv('PGPORT'),
     }
 }
 
