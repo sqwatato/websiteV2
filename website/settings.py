@@ -142,19 +142,19 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # if IS_HEROKU:
 DATABASES = {}
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'URL': os.getenv('POSTGRES_URL'),
-#         'NAME': os.getenv('POSTGRES_NAME'),
-#         'USER': os.getenv('POSTGRES_USER'),
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-#         'HOST': os.getenv('POSTGRES_HOST'),
-#         # 'PORT': os.getenv('PGPORT'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'URL': os.getenv('POSTGRES_URL'),
+        'NAME': os.getenv('POSTGRES_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        # 'PORT': os.getenv('PGPORT'),
+    }
+}
 
 
 # if "DATABASE_URL" in os.environ:
