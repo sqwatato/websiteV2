@@ -1,4 +1,7 @@
-{% extends "main/layout.html" %} {% load static %} {% block body %}
+{% extends "main/layout.html" %} 
+{% load static %} 
+{% load replace %} 
+{% block body %}
 <div class="vg-page page-about">
   <div id="index-body">
     <section id="welcome-hero" class="welcome-hero">
@@ -309,7 +312,7 @@
         All
       </button>
       {% for tag in tags %}
-      <button class="btn btn-theme-outline" data-filter=".{{ tag }}">{{ tag }}</button>
+      <button class="btn btn-theme-outline" data-filter=".{{ tag }}">{{ tag.name|replace:"_| " }}</button>
       {% endfor %}
     </div>
 
