@@ -44,7 +44,7 @@ DEBUG = False
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = ['.herokuapp.com/', '.vercel.app']
+    ALLOWED_HOSTS = ['.herokuapp.com/', '.vercel.app', '.jaydenclim.com']
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
