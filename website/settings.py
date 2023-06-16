@@ -39,7 +39,7 @@ else:
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
@@ -49,7 +49,7 @@ else:
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-# Application definition
+# Application definition 
 
 INSTALLED_APPS = [
     'main',
