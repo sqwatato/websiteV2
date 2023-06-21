@@ -30,11 +30,11 @@ SECRET_KEY = os.environ['secret_key']
 if 'SECRET_KEY' in os.environ:
     SECRET_KEY = os.environ["SECRET_KEY"]
 
-# Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
-if IS_HEROKU:
-    ALLOWED_HOSTS = ["*"]
-else:
-    ALLOWED_HOSTS = []
+# # Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
+# if IS_HEROKU:
+#     ALLOWED_HOSTS = ["*"]
+# else:
+#     ALLOWED_HOSTS = []
 
 
 
@@ -44,7 +44,7 @@ DEBUG = False
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = ['.herokuapp.com/', '.vercel.app', '.jaydenclim.com']
+    ALLOWED_HOSTS = ['.herokuapp.com/', '.vercel.app', '.jaydenclim.com', '127.0.0.1']
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
