@@ -110,12 +110,18 @@
             
         </div>
         <div class="container wow fadeInUp">
-            <div class="contact-content">
+            <div class="image-div" style="margin-top: 30px">
+                <img class="cool-image2" style="max-width: 40%; margin:auto;display:block;" src="{% static 'images/'|add:project.image %}">
+            </div>
+            <div id="description" style="margin-top: 30px; max-width: 70%; margin-right: auto; margin-left: auto">
+                {{project.description|markdownify}}
+            </div>
+            {% comment %} <div class="contact-content">
               <div class="row">
                 <div class="col-md-offset-1 col-md-5 col-sm-6">
                   <div class="single-contact-box">
                     <div class="image-div">
-                        <img class="cool-image2" src="{% static 'images/'|add:project.image %}">
+                        <img class="cool-image2" style="" src="{% static 'images/'|add:project.image %}">
                     </div>
                   </div>
                   <!--/.single-contact-box-->
@@ -136,7 +142,7 @@
               <!--/.row-->
             </div>
             <!--/.contact-content-->
-          </div>
+          </div> {% endcomment %}
 
 
         <div class="added">
