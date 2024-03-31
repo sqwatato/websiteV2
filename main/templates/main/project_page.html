@@ -75,20 +75,22 @@
             <h1 class="header">{{project.title}}</h1>
             <div class="container-social-i" id="links">
                 <ul id="icon-link-list">
-                  <li>
-                    <a
-                      href="{{project.github}}"
-                      target="_blank"
-                      aria-label="open link to project github page."
-                    >
-                      <i
-                        class="fab fa-github"
-                        aria-hidden="true"
-                        style="font-size: 2em"
-                      ></i>
-                      <span class="visually-hidden">GitHub</span></a
-                    >
-                  </li>
+                  {% if project.github|length > 0%}
+                    <li>
+                        <a
+                        href="{{project.github}}"
+                        target="_blank"
+                        aria-label="open link to project github page."
+                        >
+                        <i
+                            class="fab fa-github"
+                            aria-hidden="true"
+                            style="font-size: 2em"
+                        ></i>
+                        <span class="visually-hidden">GitHub</span></a
+                        >
+                    </li>
+                  {% endif %}
                   {% if project.website_link|length > 0%}
                     <li>
                         <a
