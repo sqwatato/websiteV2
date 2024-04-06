@@ -53,7 +53,9 @@ def project_page(request, slug):
     return render(request, "main/project_page.html", {
         "project": Project.objects.get(slug = slug)
     })
-        
+
+def pinball(request):
+    return render(request, "main/pinball.html")
         
 
 
