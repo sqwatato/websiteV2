@@ -215,7 +215,7 @@
           }
           else if(y == 90 || y == 510) {
             coords = coordsToPixels(x, Math.randomInt(board.rows));
-            if (cords.indexOf({x: x, y: coords.y, dir: 0}) == -1 && cords.indexOf({x: x, y: coords.y, dir: 2}) == -1) {
+            if (cords.indexOf({x: x, y: coords.y, dir: 0}) == -1 && cords.indexOf({x: x, y: coords.y, dir: 1}) == -1) {
               console.log({x: x, y: coords.y, dir: 0})
               padds.push({x: x, y: coords.y, dir: Math.randomInt(2)})
             }
