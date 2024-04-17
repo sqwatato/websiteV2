@@ -115,7 +115,8 @@
       
           // Background
           var img = new Image();
-          img.src = img_path + "wood.jpg";
+          //img.src = img_path + "wood.jpg";
+          img.src = "{% static 'pinball/images/wood.jpg' %}";
       
           await new Promise((resolve, reject) => {
             img.onload = async function () {
