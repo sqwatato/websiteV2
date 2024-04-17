@@ -58,12 +58,16 @@
         var self = {};
         self.ready = 0;
         self.paddles = {};
+        self.map_paddles = {};
         self.top_lights = [];
         self.bottom_lights = [];
         self.right_lights = [];
         self.left_lights = [];
         self.path = [];
         self.availability = [];
+        self.lights = {}
+        self.lights_list = [];
+        self.start_light = null;
       
         self.settings = {
           name: "Pinball Recall",
@@ -111,8 +115,7 @@
       
           // Background
           var img = new Image();
-          //img.src = img_path + "wood.jpg";
-          img.src = "{% static 'pinball/images/wood.jpg' %}";
+          img.src = img_path + "wood.jpg";
       
           await new Promise((resolve, reject) => {
             img.onload = async function () {
@@ -144,9 +147,9 @@
         setPath = function () {
           levels = [
             [
-              { x: 510, y: 390 },
-              { x: 210, y: 390 },
               { x: 210, y: 90 },
+              { x: 210, y: 390 },
+              { x: 510, y: 390 },
             ],
             [
               { x: 210, y: 90 },
@@ -180,8 +183,126 @@
           ];
       
           self.path = levels[Math.randomInt(levels.length)];
+          light = self.lights_list[self.start_light];
+          self.map_paddles = generatePaddles(light.x, light.y);
+          self.path = calculatePath(light.x, light.y);
           updateAvailableCoords();
         };
+      
+        generatePaddles = function (x,y) {
+          cords = [];
+          for(let x = 150; x <= 450; x+=60) {
+            for(let y = 150; y <= 450; y+=60) {
+              dir = Math.randomInt(2);
+              cords.push({x,y,dir})
+            }
+          }
+      
+          padds = []
+          numPaddle = Math.randomInt(5) + 7;
+          for(let i = 0; i < numPaddle; i++) {
+            randomIndex = Math.randomInt(cords.length);
+            padds.push(cords[randomIndex]);
+            cords.pop(randomIndex);
+          }
+          if(x == 90 || x == 510) {
+            coords = coordsToPixels(Math.randomInt(board.cols), y);
+            if (cords.indexOf({x: coords.x, y: y, dir: 0}) == -1 && cords.indexOf({x: coords.x, y: y, dir: 1}) == -1) {
+              console.log({x: coords.x, y: y, dir: 0})
+              padds.push({x: coords.x, y: y, dir: Math.randomInt(2)})
+            }
+          }
+          else if(y == 90 || y == 510) {
+            coords = coordsToPixels(x, Math.randomInt(board.rows));
+            if (cords.indexOf({x: x, y: coords.y, dir: 0}) == -1 && cords.indexOf({x: x, y: coords.y, dir: 2}) == -1) {
+              console.log({x: x, y: coords.y, dir: 0})
+              padds.push({x: x, y: coords.y, dir: Math.randomInt(2)})
+            }
+          }
+      
+      
+          return padds;
+        }
+      
+        calculatePath = function (x,y) {
+          path = []
+          path.push({x,y})
+          map = [];
+          for (i = 0; i < board.rows; i++) {
+            tmp = []
+            for (j = 0; j < board.cols; j++) {
+              tmp.push(null)
+            }
+            map.push(tmp);
+          }
+          for (i = 0; i < self.map_paddles.length; i++) {
+            padd = self.map_paddles[i];
+            coords = pixelsToCoords(padd.x, padd.y);
+            map[coords.y][coords.x] = padd.dir;
+          }
+          dir = -1;
+          if(y == 90) dir = 0 //down
+          else if (y == 510) dir = 2 //up
+          else if (x == 90) dir = 1 //right
+          else if (x == 510) dir = 3 //left
+      
+          // dir 0 == \
+          // dir 1 == /
+      
+          currentCords = pixelsToCoords(x,y);
+      
+          if (dir == 0) 
+            currentCords.y += 1;
+          else if (dir == 1) 
+            currentCords.x += 1;
+          else if (dir == 2) 
+            currentCords.y -= 1;
+          else if (dir == 3) 
+            currentCords.x -= 1;
+      
+          while(isOnMap(currentCords.x, currentCords.y)) {
+            if (map[currentCords.y][currentCords.x] != null) {
+              path.push(coordsToPixels(currentCords.x, currentCords.y));
+              console.log(map[currentCords.y][currentCords.x]);
+              if (dir == 0) {
+                if(map[currentCords.y][currentCords.x] == 0)
+                  dir = 1;
+                else if(map[currentCords.y][currentCords.x] == 1)
+                  dir = 3;
+              }
+              else if (dir == 1) {
+                if(map[currentCords.y][currentCords.x] == 0)
+                  dir = 0;
+                else if(map[currentCords.y][currentCords.x] == 1)
+                  dir = 2;
+              }
+              else if (dir == 2) {
+                if(map[currentCords.y][currentCords.x] == 0)
+                  dir = 3;
+                else if(map[currentCords.y][currentCords.x] == 1)
+                  dir = 1;
+              }
+              else if (dir == 3) {
+                if(map[currentCords.y][currentCords.x] == 0)
+                  dir = 2;
+                else if(map[currentCords.y][currentCords.x] == 1)
+                  dir = 0;
+              }
+            }
+            
+            if (dir == 0) 
+              currentCords.y += 1;
+            else if (dir == 1) 
+              currentCords.x += 1;
+            else if (dir == 2) 
+              currentCords.y -= 1;
+            else if (dir == 3) 
+              currentCords.x -= 1;
+          }
+          path.push(coordsToPixels(currentCords.x, currentCords.y));
+      
+          return path;
+        }
       
         // drawPath = function() {
         //   canvas.setLineDash([0]);
@@ -272,20 +393,35 @@
           for (i = 0; i < board["cols"]; i++) {
             // Horizontal Lights
             x = 150 + 60 * i;
-            self.top_lights.push(new Light(canvas, x, 90, self));
-            self.bottom_lights.push(
-              new Light(canvas, x, board_height + grid_size * 2 + 30, self)
-            );
+            t = new Light(canvas, x, 90, self)
+            self.top_lights.push(t);
+            self.lights_list.push(t);
+            coords = pixelsToCoords(x, 90);
+            self.lights["light_" + coords.x + "_" + coords.y] = t;
+            t = new Light(canvas, x, board_height + grid_size * 2 + 30, self)
+            self.bottom_lights.push(t);
+            self.lights_list.push(t);
+            coords = pixelsToCoords(x, board_height + grid_size * 2 + 30);
+            self.lights["light_" + coords.x + "_" + coords.y] = t;
           }
       
           for (i = 0; i < board["rows"]; i++) {
             // Vertical Lights
             y = 150 + 60 * i;
-            self.left_lights.push(new Light(canvas, 90, y, self));
-            self.right_lights.push(
-              new Light(canvas, board_width + grid_size * 2 + 30, y, self)
-            );
+            t = new Light(canvas, 90, y, self)
+            coords = pixelsToCoords(90, y);
+            self.left_lights.push(t);
+            self.lights_list.push(t);
+            self.lights["light_" + coords.x + "_" + coords.y] = t;
+            t = new Light(canvas, board_width + grid_size * 2 + 30, y, self)
+            coords = pixelsToCoords(board_width + grid_size * 2 + 30, y);
+            self.right_lights.push(t);
+            self.lights_list.push(t);
+            self.lights["light_" + coords.x + "_" + coords.y] = t;
           }
+      
+          // choose random start light
+          self.start_light = Math.randomInt(self.lights_list.length);
       
           // showLights(self.top_lights);
       
@@ -310,68 +446,29 @@
           // }, 1000);
         };
       
-        drawdrawPaddles = function () {
+        drawPaddle2 = function () {
           total = self.path.length;
           distractions = 4;
       
-          // Draw path
-          for (i = 1; i < total - 1; i++) {
-            next = self.path[i + 1];
-            current = self.path[i];
-            previous = self.path[i - 1];
-      
-            if (previous.y < current.y) {
-              direction = next.x > current.x ? 0 : 1;
-            } else if (previous.y > current.y) {
-              direction = next.x > current.x ? 1 : 0;
-            } else if (previous.x < current.x) {
-              direction = next.y > current.y ? 0 : 1;
-            } else if (previous.x > current.x) {
-              direction = next.y > current.y ? 1 : 0;
+          for (i = 0; i < self.map_paddles.length; i++) {
+            padd = self.map_paddles[i];
+            coords = pixelsToCoords(padd.x, padd.y);
+            if (self.paddles["paddle_" + coords.x + "_" + coords.y] == null) {
+              self.paddles["paddle_" + coords.x + "_" + coords.y] = new Paddle(
+                canvas,
+                padd.dir,
+                coords.x,
+                coords.y
+              );
             }
-      
-            coords = pixelsToCoords(current.x, current.y);
-      
-            self.paddles["paddle_" + i] = new Paddle(
-              canvas,
-              direction,
-              coords.x,
-              coords.y
-            );
-          }
-      
-          // Draw distractions
-          for (i = total; i < total + distractions; i++) {
-            direction = Math.randomInt(2);
-            //coords = randomCoord();
-            available = self.availability.splice(
-              Math.randomInt(self.availability.length),
-              1
-            );
-            console.log(available);
-            coords = available.first().split("_");
-            self.paddles["paddle_" + i] = new Paddle(
-              canvas,
-              direction,
-              coords.first(),
-              coords.last()
-            );
           }
         };
       
         drawPaddles = async function () {
           show_time = 1600; // 1600
           hide_time = 4000;
-          // run if its been less than 4 seconds since start_time
-          // if((Date.now() - start_time) < hide_time) {
-          //   drawdrawPaddles();
-          // }
-          // log time diff
-          // setTimeout(function() {
       
-          // }, show_time);
-      
-          drawdrawPaddles();
+          drawPaddle2();
           await runAfterDelay();
           // try except
           try {
@@ -380,6 +477,7 @@
               self.paddles[i].hide();
             }
           } catch (e) {}
+          
           // setTimeout(function() {
           
           // }, hide_time);
@@ -440,6 +538,10 @@
           });
         };
       
+        isOnMap = function (x,y) {
+          return x < board.cols && x >= 0 && y < board.rows && y >= 0
+        }
+      
         randomCoord = function () {
           return {
             x: Math.randomInt(board.cols),
@@ -454,6 +556,13 @@
           };
         };
       
+        coordsToPixels = function (x,y) {
+          return {
+            x: (x * grid_size)+150,
+            y: (y * grid_size)+150,
+          }
+        }
+      
         function waitFourSeconds() {
           return new Promise((resolve) => {
             setTimeout(resolve, 4000);
@@ -466,7 +575,7 @@
         }
       
         startGame = async function () {
-          self.top_lights[1].start_marker();
+          self.lights_list[self.start_light].start_marker();
           self.ready = 2;
           // self.ready = 1;
         };
@@ -488,369 +597,6 @@
       
         return self;
       })();
-      
-      function animate() {
-        requestAnimFrame(animate);
-        if(Game.ready === 1) {
-          Game.ball.draw();
-        }
-      }
-      
-      Ball = function() {
-        var self = {};
-      
-        self.init = function() {
-          self.x = null;
-          self.y = null;
-          self.radius = 15;
-          self.lineWidth = 6;
-          self.size = 40;
-          self.speed = 10;
-          self.canvas = $("#ball").getContext('2d');
-      
-          self.path_index = 0;
-          self.options = {
-            fillStyle: "#2fbeea",
-            strokeStyle: "#FFFFFF",
-            lineWidth: self.lineWidth
-          }
-          return self;
-        }
-      
-        self.draw = function() {
-          if (Game.path.length == self.path_index) {
-            return false;
-          }
-      
-          self.canvas.merge(self.options);
-          self.canvas.clearRect(self.x-(self.size/2), self.y-(self.size/2), self.size, self.size);
-      
-          if (self.x == null) {
-            self.x = Game.path[self.path_index].x;
-            self.y = Game.path[self.path_index].y;
-          }
-      
-          if (self.y < Game.path[self.path_index].y) {
-            self.y += self.speed;
-          } else if (self.y > Game.path[self.path_index].y) {
-            self.y -= self.speed;
-          }
-      
-          if (self.x < Game.path[self.path_index].x) {
-            self.x += self.speed;
-          } else if (self.x > Game.path[self.path_index].x) {
-            self.x -= self.speed;
-          }
-      
-          if (self.y == Game.path[self.path_index].y && self.x == Game.path[self.path_index].x) {
-            if (self.path_index != 0 && (self.path_index < Game.path.length-1)) {
-              Game.paddles['paddle_' + self.path_index].bend();
-            }
-            self.path_index ++;
-          }
-      
-          self.canvas.beginPath();
-          self.canvas.arc(self.x, self.y, self.radius, 0, 2 * Math.PI, false);
-          self.canvas.fill();
-          self.canvas.stroke();
-        }
-      
-        return self.init();
-      };
-      
-      Draw = {
-        line: function(target, start, end, styleOptions) {
-          target.merge(styleOptions);
-      
-          target.beginPath();
-          target.moveTo(start.x, start.y);
-          target.lineTo(end.x, end.y);
-          target.stroke();
-        },
-      
-        box: function(target, start, end, styleOptions) {
-          target.merge(styleOptions);
-          target.fillRect(start.x, start.y, end.x, end.y);
-        },
-      
-        circle: function() {
-      
-        },
-      
-        path: function(target, lines, styleOptions) {
-          target.merge(styleOptions);
-          console.log("PATH", lines);
-          target.beginPath();
-          target.moveTo(lines[0].x, lines[0].y);
-          for(i=1;i<lines.length;i++) {
-            target.lineTo(lines[i].x, lines[i].y);
-          }
-          target.stroke();
-        }
-      }
-      
-      // Global Cache
-      
-      Cache = (function() {
-        self = {
-          dom: {},
-          data: {}
-        }
-        return self;
-      }());
-      
-      // String Patches
-      
-      String.prototype.supplant = function (o) {
-        return this.replace(/{([^{}]*)}/g,
-          function (a, b) {
-            var r = o[b];
-            return typeof r === 'string' || typeof r === 'number' ? r : a;
-          }
-        );
-      };
-      
-      // Object Patches
-      
-      Object.prototype.merge = function(other) {
-        for (var key in other) {
-          this[key] = other[key];
-        }
-      }
-      
-      Object.prototype.each = function(callback) {
-        for(t in this) {
-          if(this.propertyIsEnumerable(t)) {
-            callback(this[t]);
-          }
-        }
-      }
-      
-      // Array Patches
-      
-      Array.prototype.each = function(callback) {
-        var size = this.length;
-        for(var i = 0; i < size; i++) {
-          callback(this[i], i);
-        }
-      }
-      
-      Array.prototype.first = function() {
-        return this[0];
-      }
-      
-      Array.prototype.last = function() {
-        return this.slice(-1)[0];
-      }
-      
-      // Math Pathces
-      
-      Math.randomInt = function(max) {
-        max = max || 10;
-        return Math.floor( Math.random() * max );
-      }
-      
-      // jQuery style element selector
-      
-      $ = function(selectors) {
-        elements = Cache.dom[selectors] || document.querySelector(selectors);
-        return Cache.dom[selectors] = elements;
-      }
-      
-      // requestAnimFrame Shim
-      
-      window.requestAnimFrame = (function(){
-        return window.requestAnimationFrame  ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame    ||
-          window.oRequestAnimationFrame      ||
-          window.msRequestAnimationFrame     ||
-          function(/* function */ callback, /* DOMElement */ element){
-            window.setTimeout(callback, 1000 / 60);
-          };
-      })();
-      
-      Light = function(canvas, x, y, game) {
-        var self = {};
-        self.x = x;
-        self.y = y;
-        self.game = game;
-      
-        var radius = 15;
-        var canvas = null;
-      
-        self.init = function() {
-          Mouse.registerTouchable(self, { x: self.x, y: self.y });
-          var canvasElement = document.getElementById('ball');
-          canvas = $("#lights").getContext('2d');
-          canvas.beginPath();
-          canvas.setLineDash([0]);
-          canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
-          canvas.fillStyle = '#935f30';
-          canvas.lineWidth = 6;
-          canvas.strokeStyle = '#3a1f0a';
-          canvas.fill();
-          canvas.stroke();
-          // Add the click event listener to the canvas
-          canvasElement.addEventListener('click', self.click);
-          return self;
-        }
-      
-        self.mouseOver = function() {
-          if (self.game.ready === 2) {
-            canvas.beginPath();
-            canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
-            canvas.fillStyle = 'rgba(252, 237, 188, 1)';
-            canvas.fill();
-            canvas.lineWidth = 6;
-            canvas.strokeStyle = '#3a1f0a';
-            canvas.stroke();
-          }
-        }
-      
-        self.mouseOut = function() {
-          if (self.game.ready === 2) {
-            canvas.beginPath();
-            canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
-            canvas.fillStyle = 'rgba(147, 95, 48, 1)';
-            canvas.fill();
-            canvas.lineWidth = 6;
-            canvas.strokeStyle = '#3a1f0a';
-            canvas.stroke();
-          }
-        }
-      
-        self.glow = function(glow_speed) {
-          if (self.game.ready === 2) {
-            canvas.beginPath();
-            canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
-            canvas.fillStyle = 'rgba(252, 237, 188, 1)';
-            canvas.fill();
-            canvas.lineWidth = 6;
-            canvas.strokeStyle = '#3a1f0a';
-            canvas.stroke();
-            glow_interval = 40;
-            glow_speed = glow_speed ? glow_speed : 1;
-            self.alpha = 0;
-            self.glow_int = setInterval(function() {
-              canvas.beginPath();
-              canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
-              canvas.fillStyle = 'rgba(147, 95, 48, '+self.alpha/10+')';
-              canvas.fill();
-              canvas.lineWidth = 6;
-              canvas.strokeStyle = '#3a1f0a';
-              canvas.stroke();
-              self.alpha += glow_speed;
-              if(Math.round(self.alpha) == 10) {
-                clearInterval(self.glow_int);
-              }
-            }, glow_interval);
-          }
-        }
-      
-        self.start_marker = function() {
-          m_width = 40;
-          m_height = 20;
-          m_angle = 30;
-          m_start = {
-            x: x-20,
-            y: y-15,
-          };
-      
-          canvas.clearRect(m_start.x-10, m_start.y-10, m_width+25, m_height+25);
-      
-          canvas.fillStyle="#2fbeea";
-          canvas.strokeStyle="#FFFFFF";
-          canvas.lineWidth = 6;
-          canvas.beginPath();
-      
-          canvas.moveTo( m_start.x, m_start.y );
-          canvas.lineTo( (m_start.x + m_width), m_start.y );
-          canvas.lineTo( (m_start.x + m_height), (m_start.y + m_angle) );
-      
-          canvas.closePath();
-          canvas.fill();
-          canvas.stroke();
-        }
-      
-        self.click = function(event) {
-          if (self.game.ready === 2) {
-            var canvasElement = document.getElementById('ball');
-            var rect = canvasElement.getBoundingClientRect();
-            var dx = event.clientX - rect.left - x;
-            var dy = event.clientY - rect.top - y;
-            var distance = Math.sqrt(dx * dx + dy * dy);
-          
-            if (distance < radius) {
-              self.game.ready = 1;
-            }
-          }
-        }
-        
-      
-        return self.init();
-      }
-      // TODO: Factor in y scroll offset
-      
-      Mouse = (function() {
-        // Public
-        self = {};
-        self.x = null;
-        self.y = null;
-        self.offset_x = null;
-        self.offset_y = null;
-        self.target = null;
-      
-        // Private
-        touchables = [];
-      
-        document.addEventListener("mousemove", function(event) {
-          self.x = event.x;
-          self.y = event.y;
-      
-          self.offset_x = $('#container').offsetLeft;
-          self.offset_y = $('#container').offsetTop;
-      
-          coords = pixelsToCoords(
-            (self.x - self.offset_x),
-            (self.y - self.offset_y)
-          );
-      
-          over = false;
-      
-          touchables.each(function(touchable) {
-            target_coords = pixelsToCoords(
-              (touchable.coords.x),
-              (touchable.coords.y)
-            );
-            if(coords.x == target_coords.x && coords.y == target_coords.y) {
-              over = true;
-              if(self.target != touchable.target) {
-                $('#container').style.cursor = 'pointer';
-                if(self.target != null) self.target.mouseOut();
-                self.target = touchable.target;
-                self.target.mouseOver();
-              }
-            }
-          });
-      
-          if(!over && self.target != null) {
-            $('#container').style.cursor = 'default';
-            self.target.mouseOut();
-            self.target = null;
-          }
-        });
-      
-        self.registerTouchable = function(target, coords) {
-          touchables.push({target: target, coords: coords});
-        }
-      
-        self.getTouchables = function() {
-          return touchables;
-        }
-      
-        return self;
-      }());
       
       Paddle = function(canvas, d, x, y) {
         var self = {};
@@ -952,8 +698,434 @@
       
         return self.init();
       };
+      function animate() {
+        requestAnimFrame(animate);
+        if(Game.ready === 1) {
+          Game.ball.draw();
+        }
+      }
+      Light = function(canvas, x, y, game) {
+        var self = {};
+        self.x = x;
+        self.y = y;
+        self.game = game;
+      
+        var radius = 15;
+        var canvas = null;
+      
+        self.init = function() {
+          Mouse.registerTouchable(self, { x: self.x, y: self.y });
+          var canvasElement = document.getElementById('ball');
+          canvas = $("#lights").getContext('2d');
+          canvas.beginPath();
+          canvas.setLineDash([0]);
+          canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
+          canvas.fillStyle = '#935f30';
+          canvas.lineWidth = 6;
+          canvas.strokeStyle = '#3a1f0a';
+          canvas.fill();
+          canvas.stroke();
+          // Add the click event listener to the canvas
+          canvasElement.addEventListener('click', self.click);
+          return self;
+        }
+      
+        self.mouseOver = function() {
+          if (self.game.ready === 2 && self.game.lights_list[self.game.start_light] != self) {
+            canvas.beginPath();
+            canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
+            canvas.fillStyle = 'rgba(252, 237, 188, 1)';
+            canvas.fill();
+            canvas.lineWidth = 6;
+            canvas.strokeStyle = '#3a1f0a';
+            canvas.stroke();
+          }
+        }
+      
+        self.mouseOut = function() {
+          if (self.game.ready === 2 && self.game.lights_list[self.game.start_light] != self) {
+            canvas.beginPath();
+            canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
+            canvas.fillStyle = 'rgba(147, 95, 48, 1)';
+            canvas.fill();
+            canvas.lineWidth = 6;
+            canvas.strokeStyle = '#3a1f0a';
+            canvas.stroke();
+          }
+        }
+      
+        self.glow = function(glow_speed) {
+          if (self.game.ready === 2 && self.game.lights_list[self.game.start_light] != self) {
+            canvas.beginPath();
+            canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
+            canvas.fillStyle = 'rgba(252, 237, 188, 1)';
+            canvas.fill();
+            canvas.lineWidth = 6;
+            canvas.strokeStyle = '#3a1f0a';
+            canvas.stroke();
+            glow_interval = 40;
+            glow_speed = glow_speed ? glow_speed : 1;
+            self.alpha = 0;
+            self.glow_int = setInterval(function() {
+              canvas.beginPath();
+              canvas.arc(x, y, radius, 0, 2 * Math.PI, false);
+              canvas.fillStyle = 'rgba(147, 95, 48, '+self.alpha/10+')';
+              canvas.fill();
+              canvas.lineWidth = 6;
+              canvas.strokeStyle = '#3a1f0a';
+              canvas.stroke();
+              self.alpha += glow_speed;
+              if(Math.round(self.alpha) == 10) {
+                clearInterval(self.glow_int);
+              }
+            }, glow_interval);
+          }
+        }
+      
+        self.start_marker = function() {
+          m_width = 40;
+          m_height = 20;
+          m_angle = 30;
+          if (x == 90) {
+            m_start = {
+              x: x-15,
+              y: y-20,
+            };
+        
+            canvas.clearRect(m_start.x-10, m_start.y-10, m_width+25, m_height+25);
+        
+            canvas.fillStyle="#2fbeea";
+            canvas.strokeStyle="#FFFFFF";
+            canvas.lineWidth = 6;
+            canvas.beginPath();
+        
+            canvas.moveTo( m_start.x, m_start.y );
+            canvas.lineTo( (m_start.x), (m_start.y + m_width) );
+            canvas.lineTo( (m_start.x + m_angle), (m_start.y + m_height) );
+        
+            canvas.closePath();
+            canvas.fill();
+            canvas.stroke();
+          }
+          else if (x == 510) {
+            m_start = {
+              x: x+15,
+              y: y-20,
+            };
+        
+            canvas.clearRect(m_start.x-10, m_start.y-10, m_width+25, m_height+25);
+        
+            canvas.fillStyle="#2fbeea";
+            canvas.strokeStyle="#FFFFFF";
+            canvas.lineWidth = 6;
+            canvas.beginPath();
+        
+            canvas.moveTo( m_start.x, m_start.y );
+            canvas.lineTo( (m_start.x), (m_start.y + m_width) );
+            canvas.lineTo( (m_start.x - m_angle), (m_start.y + m_height) );
+        
+            canvas.closePath();
+            canvas.fill();
+            canvas.stroke();
+          }
+          else if(y == 510) {
+            m_start = {
+              x: x-20,
+              y: y+15,
+            };
+        
+            canvas.clearRect(m_start.x-10, m_start.y-10, m_width+25, m_height+25);
+        
+            canvas.fillStyle="#2fbeea";
+            canvas.strokeStyle="#FFFFFF";
+            canvas.lineWidth = 6;
+            canvas.beginPath();
+        
+            canvas.moveTo( m_start.x, m_start.y );
+            canvas.lineTo( (m_start.x + m_width), m_start.y );
+            canvas.lineTo( (m_start.x + m_height), (m_start.y - m_angle) );
+        
+            canvas.closePath();
+            canvas.fill();
+            canvas.stroke();
+          }
+          else {
+            m_start = {
+              x: x-20,
+              y: y-15,
+            };
+        
+            canvas.clearRect(m_start.x-10, m_start.y-10, m_width+25, m_height+25);
+        
+            canvas.fillStyle="#2fbeea";
+            canvas.strokeStyle="#FFFFFF";
+            canvas.lineWidth = 6;
+            canvas.beginPath();
+        
+            canvas.moveTo( m_start.x, m_start.y );
+            canvas.lineTo( (m_start.x + m_width), m_start.y );
+            canvas.lineTo( (m_start.x + m_height), (m_start.y + m_angle) );
+        
+            canvas.closePath();
+            canvas.fill();
+            canvas.stroke();
+          }
+        }
+      
+        self.click = function(event) {
+          if (self.game.ready === 2) {
+            var canvasElement = document.getElementById('ball');
+            var rect = canvasElement.getBoundingClientRect();
+            var dx = event.clientX - rect.left - x;
+            var dy = event.clientY - rect.top - y;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+          
+            if (distance < radius) {
+              self.game.ready = 1;
+            }
+          }
+        }
+        
+      
+        return self.init();
+      }
+      Draw = {
+        line: function(target, start, end, styleOptions) {
+          target.merge(styleOptions);
+      
+          target.beginPath();
+          target.moveTo(start.x, start.y);
+          target.lineTo(end.x, end.y);
+          target.stroke();
+        },
+      
+        box: function(target, start, end, styleOptions) {
+          target.merge(styleOptions);
+          target.fillRect(start.x, start.y, end.x, end.y);
+        },
+      
+        circle: function() {
+      
+        },
+      
+        path: function(target, lines, styleOptions) {
+          target.merge(styleOptions);
+          console.log("PATH", lines);
+          target.beginPath();
+          target.moveTo(lines[0].x, lines[0].y);
+          for(i=1;i<lines.length;i++) {
+            target.lineTo(lines[i].x, lines[i].y);
+          }
+          target.stroke();
+        }
+      }
+      // Global Cache
+      
+      Cache = (function() {
+        self = {
+          dom: {},
+          data: {}
+        }
+        return self;
+      }());
+      
+      // String Patches
+      
+      String.prototype.supplant = function (o) {
+        return this.replace(/{([^{}]*)}/g,
+          function (a, b) {
+            var r = o[b];
+            return typeof r === 'string' || typeof r === 'number' ? r : a;
+          }
+        );
+      };
+      
+      // Object Patches
+      
+      Object.prototype.merge = function(other) {
+        for (var key in other) {
+          this[key] = other[key];
+        }
+      }
+      
+      Object.prototype.each = function(callback) {
+        for(t in this) {
+          if(this.propertyIsEnumerable(t)) {
+            callback(this[t]);
+          }
+        }
+      }
+      
+      // Array Patches
+      
+      Array.prototype.each = function(callback) {
+        var size = this.length;
+        for(var i = 0; i < size; i++) {
+          callback(this[i], i);
+        }
+      }
+      
+      Array.prototype.first = function() {
+        return this[0];
+      }
+      
+      Array.prototype.last = function() {
+        return this.slice(-1)[0];
+      }
+      
+      // Math Pathces
+      
+      Math.randomInt = function(max) {
+        max = max || 10;
+        return Math.floor( Math.random() * max );
+      }
+      
+      // jQuery style element selector
+      
+      $ = function(selectors) {
+        elements = Cache.dom[selectors] || document.querySelector(selectors);
+        return Cache.dom[selectors] = elements;
+      }
+      
+      // requestAnimFrame Shim
+      
+      window.requestAnimFrame = (function(){
+        return window.requestAnimationFrame  ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          window.oRequestAnimationFrame      ||
+          window.msRequestAnimationFrame     ||
+          function(/* function */ callback, /* DOMElement */ element){
+            window.setTimeout(callback, 1000 / 60);
+          };
+      })();
+      
+      Ball = function() {
+        var self = {};
+      
+        self.init = function() {
+          self.x = null;
+          self.y = null;
+          self.radius = 15;
+          self.lineWidth = 6;
+          self.size = 40;
+          self.speed = 10;
+          self.canvas = $("#ball").getContext('2d');
+      
+          self.path_index = 0;
+          self.options = {
+            fillStyle: "#2fbeea",
+            strokeStyle: "#FFFFFF",
+            lineWidth: self.lineWidth
+          }
+          return self;
+        }
+      
+        self.draw = function() {
+          if (Game.path.length == self.path_index) {
+            return false;
+          }
+      
+          self.canvas.merge(self.options);
+          self.canvas.clearRect(self.x-(self.size/2), self.y-(self.size/2), self.size, self.size);
+      
+          if (self.x == null) {
+            self.x = Game.path[self.path_index].x;
+            self.y = Game.path[self.path_index].y;
+          }
+      
+          if (self.y < Game.path[self.path_index].y) {
+            self.y += self.speed;
+          } else if (self.y > Game.path[self.path_index].y) {
+            self.y -= self.speed;
+          }
+      
+          if (self.x < Game.path[self.path_index].x) {
+            self.x += self.speed;
+          } else if (self.x > Game.path[self.path_index].x) {
+            self.x -= self.speed;
+          }
+      
+          if (self.y == Game.path[self.path_index].y && self.x == Game.path[self.path_index].x) {
+            if (self.path_index != 0 && (self.path_index < Game.path.length-1)) {
+              coords = pixelsToCoords(Game.path[self.path_index].x, Game.path[self.path_index].y);
+              Game.paddles['paddle_' + coords.x + '_' + coords.y].bend();
+            }
+            self.path_index ++;
+          }
+      
+          self.canvas.beginPath();
+          self.canvas.arc(self.x, self.y, self.radius, 0, 2 * Math.PI, false);
+          self.canvas.fill();
+          self.canvas.stroke();
+        }
+      
+        return self.init();
+      };
+      // TODO: Factor in y scroll offset
+      
+      Mouse = (function() {
+        // Public
+        self = {};
+        self.x = null;
+        self.y = null;
+        self.offset_x = null;
+        self.offset_y = null;
+        self.target = null;
+      
+        // Private
+        touchables = [];
+      
+        document.addEventListener("mousemove", function(event) {
+          self.x = event.x;
+          self.y = event.y;
+      
+          self.offset_x = $('#container').offsetLeft;
+          self.offset_y = $('#container').offsetTop;
+      
+          coords = pixelsToCoords(
+            (self.x - self.offset_x),
+            (self.y - self.offset_y)
+          );
+      
+          over = false;
+      
+          touchables.each(function(touchable) {
+            target_coords = pixelsToCoords(
+              (touchable.coords.x),
+              (touchable.coords.y)
+            );
+            if(coords.x == target_coords.x && coords.y == target_coords.y) {
+              over = true;
+              if(self.target != touchable.target) {
+                $('#container').style.cursor = 'pointer';
+                if(self.target != null) self.target.mouseOut();
+                self.target = touchable.target;
+                self.target.mouseOver();
+              }
+            }
+          });
+      
+          if(!over && self.target != null) {
+            $('#container').style.cursor = 'default';
+            self.target.mouseOut();
+            self.target = null;
+          }
+        });
+      
+        self.registerTouchable = function(target, coords) {
+          touchables.push({target: target, coords: coords});
+        }
+      
+        self.getTouchables = function() {
+          return touchables;
+        }
+      
+        return self;
+      }());
       
       window.onload = function() { Game.init(); }
+      
     </script>
   </div>
 </body>
